@@ -129,7 +129,7 @@ while startIndex !=5000 and startIndex < total : #result limit 5000 entity
           keywords = data["abstracts-retrieval-response"]["authkeywords"]["author-keyword"]
 
           data_list.append({
-              "Article Id": article_id,
+              "Article Id": int(article_id),
               "Title": title,
               "Abstract": abstract,
               "Publish Date": publish_date,

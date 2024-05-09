@@ -91,7 +91,7 @@ for year in years :
                 keywords = data["abstracts-retrieval-response"]["authkeywords"]["author-keyword"]
 
                 data_list.append({
-                    "Article Id": article_id,
+                    "Article Id": int(article_id),
                     "Title": title,
                     "Abstract": abstract,
                     "Publish Date": publish_date,

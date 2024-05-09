@@ -47,12 +47,13 @@ print("######################################")
 (
     df_all_csv_fmt
     .select([c for c in df_all_csv_fmt.columns if c != "timestamp_epoch"])
+    .dropDuplicates(['Article Id'])
     .write
     .format("jdbc")
     .option("url", postgres_db)
     .option("dbtable", "public.all")
     .option("user", postgres_user)
     .option("password", postgres_pwd)
-    .mode("overwrite")
+    .mode("append")
     .save()
 )
