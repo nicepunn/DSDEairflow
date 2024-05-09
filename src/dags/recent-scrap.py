@@ -33,8 +33,8 @@ default_args = {
 }
 
 dag = DAG(
-    dag_id="data-proj-dag",
-    description="DAG for scrapping ans save to postgres",
+    dag_id="recent-scrap",
+    description="DAG for scrapping new data and append to postgres",
     default_args=default_args,
     schedule_interval=timedelta(1)
 )
@@ -43,7 +43,7 @@ start = DummyOperator(task_id="start", dag=dag)
 
 data_scraping = SparkSubmitOperator(
     task_id="scraping",
-    application="/usr/local/spark/applications/scraping-spark.py",
+    application="/usr/local/spark/applications/recent-scraping-spark.py",
     name="scrapping",
     conn_id="spark_conn",
     verbose=1,
