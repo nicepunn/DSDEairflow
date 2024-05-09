@@ -74,7 +74,6 @@ df_all_csv = (
     .load("/usr/local/spark/assets/data/init_data.csv")
 )
 
-# Convert epoch to timestamp and rating to DoubleType
 df_all_csv_fmt = (
     df_all_csv
 )

@@ -40,10 +40,10 @@ dag = DAG(
 
 start = DummyOperator(task_id="start", dag=dag)
 
-spark_job_load_postgres = SparkSubmitOperator(
-    task_id="spark_job_load_postgres",
+spark_job_init_postgres = SparkSubmitOperator(
+    task_id="spark_job_init_postgres",
     application="/usr/local/spark/applications/postgres-init.py",
-    name="load-postgres",
+    name="init-postgres",
     conn_id="spark_conn",
     verbose=1,
     conf={"spark.master": spark_master},
@@ -66,4 +66,4 @@ spark_job_read_postgres = SparkSubmitOperator(
 
 end = DummyOperator(task_id="end", dag=dag)
 
-start >> spark_job_load_postgres >> spark_job_read_postgres >> end
+start >> spark_job_init_postgres >> spark_job_read_postgres >> end
