@@ -248,10 +248,19 @@ while startIndex !=5000 and startIndex < total : #result limit 5000 entity
             publish_date = pd.to_datetime(data["abstracts-retrieval-response"]["item"]["ait:process-info"]["ait:date-delivered"]["@timestamp"]).strftime('%Y-%m-%d')
             rawkeywords = data["abstracts-retrieval-response"]["authkeywords"]["author-keyword"]
             keywords = [text_preprocessing(d["$"]) for d in eval(str(rawkeywords))] if type(rawkeywords) == list else [text_preprocessing(d["$"]) for d in eval(str([rawkeywords]))]
+            country = ""
+            if "@country" in data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["source"].keys():
+                country = data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["source"]["@country"]
+            author_names = []
+            for author in data["abstracts-retrieval-response"]["coredata"]["dc:creator"]["author"]:
+                if "ce:given-name" in author.keys():
+                    author_names.append(author["ce:given-name"] + " " + author["ce:surname"])
             data_list.append({
                 "Article Id": int(article_id),
                 "Title": title,
                 "Abstract": abstract,
+                "Author name": author_names,
+                "Country": country,
                 "Publish Date": publish_date,
                 "Keywords": keywords
             })

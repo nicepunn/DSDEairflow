@@ -144,58 +144,53 @@ postgres_pwd = sys.argv[3]
 # json to CSV // uncommented this if no CSV
 ####################################
 
-data_list = []
-json_folder = "/usr/local/spark/assets/data/init_data_json/init_data_json"
-c = 0
-for filename in os.listdir(json_folder):
-    c += 1
-    file_path = os.path.join(json_folder, filename)
-    with open(file_path) as f:
-        data = json.load(f)
-        if data["abstracts-retrieval-response"]["authkeywords"] != None :
-            abstract = data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["abstracts"]
-            title = data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["citation-title"]
-            publish_date = pd.to_datetime(data["abstracts-retrieval-response"]["item"]["ait:process-info"]["ait:date-delivered"]["@timestamp"]).strftime('%Y-%m-%d')
-            rawkeywords = data["abstracts-retrieval-response"]["authkeywords"]["author-keyword"]
-            ID = 0
-            for item in data['abstracts-retrieval-response']['item']['bibrecord']['item-info']["itemidlist"]["itemid"]:
-                if item["@idtype"] == "SCP":
-                    ID = int(item["$"])
-                    break
+# data_list = []
+# json_folder = "/usr/local/spark/assets/data/init_data_json/init_data_json"
+# c = 0
+# for filename in os.listdir(json_folder):
+#     c += 1
+#     file_path = os.path.join(json_folder, filename)
+#     with open(file_path) as f:
+#         data = json.load(f)
+#         if data["abstracts-retrieval-response"]["authkeywords"] != None :
+#             abstract = data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["abstracts"]
+#             title = data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["citation-title"]
+#             publish_date = pd.to_datetime(data["abstracts-retrieval-response"]["item"]["ait:process-info"]["ait:date-delivered"]["@timestamp"]).strftime('%Y-%m-%d')
+#             rawkeywords = data["abstracts-retrieval-response"]["authkeywords"]["author-keyword"]
+#             keywords = [text_preprocessing(d["$"]) for d in eval(str(rawkeywords))] if type(rawkeywords) == list else [text_preprocessing(d["$"]) for d in eval(str([rawkeywords]))]
+#             ID = 0
+#             for item in data['abstracts-retrieval-response']['item']['bibrecord']['item-info']["itemidlist"]["itemid"]:
+#                 if item["@idtype"] == "SCP":
+#                     ID = int(item["$"])
+#                     break
+#             country = ""
+#             if "@country" in data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["source"].keys():
+#                 country = data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["source"]["@country"]
+#             author_names = []
+#             for author in data["abstracts-retrieval-response"]["coredata"]["dc:creator"]["author"]:
+#                 if "ce:given-name" in author.keys():
+#                     author_names.append(author["ce:given-name"] + " " + author["ce:surname"])
 
-            country = "none"
-            author_name = "none"
-            for author_group in data["abstracts-retrieval-response"]["item"]["bibrecord"]["head"]["author-group"]:
-                if author_group == str(author_group):
-                    country = "none"
-                    author_name = "none"
-                else:
-                    country = text_preprocessing(author_group["affiliation"]["country"])
-                    # for author in author_group["author"]:
-                    #     author_name = author["ce:given-name"] + " " + author["ce:surname"]
-            
-            keywords = [text_preprocessing(d["$"]) for d in eval(str(rawkeywords))] if type(rawkeywords) == list else [text_preprocessing(d["$"]) for d in eval(str([rawkeywords]))]
-
-            data_list.append({
-                    "Article Id": ID,
-                    "Title": title,
-                    "Abstract": abstract,
-                    "Author name": author_name,
-                    "Country": country,
-                    "Publish Date": publish_date,
-                    "Keywords": keywords
-            })
-            print(keywords)
-            print(country)
-            print(author_name)
+#             data_list.append({
+#                     "Article Id": ID,
+#                     "Title": title,
+#                     "Abstract": abstract,
+#                     "Author name": author_names,
+#                     "Country": country,
+#                     "Publish Date": publish_date,
+#                     "Keywords": keywords
+#             })
+#             print(keywords)
+#             print(country)
+#             print(author_names)
         
-    print(c)
+#     print(c)
         
 
-df = pd.DataFrame(data_list)
+# df = pd.DataFrame(data_list)
 
-df.to_csv("/usr/local/spark/assets/data/init_data.csv", index = False, encoding="utf-8")
-print("to csv finished")
+# df.to_csv("/usr/local/spark/assets/data/init_data.csv", index = False, encoding="utf-8")
+# print("to csv finished")
 
 ####################################
 # Read CSV Data
