@@ -71,6 +71,10 @@ RUN set -ex \
     && pip install apache-airflow-providers-amazon \
     && pip install redis \
     && pip install streamlit \
+    && pip install regex \
+    && pip install numpy \
+    && pip install nltk \
+    && pip install contractions \
     && pip install pandas \
     && if [ -n "${PYTHON_DEPS}" ]; then pip install ${PYTHON_DEPS}; fi \
     && apt-get purge --auto-remove -yqq $buildDeps \
